@@ -1,0 +1,18 @@
+{
+  "name": "phyloproteomics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "tsc; node dist/index.js"
+  },
+  "author": "Daniel Bailey",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "puppeteer": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.7",
+    "typescript": "^4.8.4"
+  }
+}
