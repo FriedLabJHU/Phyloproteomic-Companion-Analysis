@@ -1,0 +1,13 @@
+node_modules
+dist
+
+inputs.tsv
+File02.tsv
+
+results.tsv
+results.csv
+errors/*.tsv
+errors/*.csv
+
+first_full_run_results.tsv
+results.tsv
