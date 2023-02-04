@@ -10,7 +10,6 @@ const init = async () => {
   const outputFile = process.env.outputFile || "./output/results.tsv";
 
   validateInputFile(inputFile);
-  cleanUpPrev(outputFile);
 
   const data = SV2JSON<BACTERIA_MIN>(inputFile);
 
@@ -96,6 +95,8 @@ const init = async () => {
     }
     return { ...allObjectKeys, ...item };
   });
+
+  cleanUpPrev(outputFile);
 
   JSON2SV(errors, "./output/errors.tsv", {
     delimiter: "\t",
