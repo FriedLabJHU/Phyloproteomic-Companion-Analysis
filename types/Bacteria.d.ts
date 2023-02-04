@@ -10,6 +10,7 @@ type BACTERIA_MIN = {
   http_path?: string;
   unique_name?: string;
   infraspecific_name: string;
+  species: string;
 };
 
 type BACTERIA_ALL = BACTERIA_MIN & {
