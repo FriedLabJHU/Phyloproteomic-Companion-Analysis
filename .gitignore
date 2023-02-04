@@ -11,3 +11,5 @@ output/*.csv
 
 first_full_run_results.tsv
 results.tsv
+
+*.tsv
