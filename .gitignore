@@ -6,8 +6,8 @@ File02.tsv
 
 results.tsv
 results.csv
-errors/*.tsv
-errors/*.csv
+output/*.tsv
+output/*.csv
 
 first_full_run_results.tsv
 results.tsv
