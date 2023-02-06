@@ -14,4 +14,4 @@ Companion files used in the collection, creation, and analysis of data.
 
 Add your source file to the repository root
 
-`yarn install; yarn start;` OR `npm install; npm start`
+`yarn install; inputFile=file.tsv yarn start;` OR `npm install; inputFile=file.tsv npm start`
