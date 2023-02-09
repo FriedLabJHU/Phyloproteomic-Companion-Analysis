@@ -107,16 +107,20 @@ const init = async () => {
       missingIndexes.push(i);
     }
   }
-  const missingIndexesErrors = missingIndexes.map((index) => {
-    // if its the species is not in allSearchTerms then add it to missing else return false
-    const datum = data[index];
-    const searchTerm = allSearchTerms.findIndex(
-      (item) => item.toLowerCase() === datum.species.toLowerCase()
-    );
-    if (searchTerm === -1) return { ...datum, index };
-    console.log(`duplicate missing index: skipping ${index} ${datum.species}`);
-    return false;
-  });
+  const missingIndexesErrors = missingIndexes
+    .map((index) => {
+      // if its the species is not in allSearchTerms then add it to missing else return false
+      const datum = data[index];
+      const searchTerm = allSearchTerms.findIndex(
+        (item) => item.toLowerCase() === datum.species.toLowerCase()
+      );
+      if (searchTerm === -1) return { ...datum, index };
+      console.log(
+        `duplicate missing index: skipping ${index} ${datum.species}`
+      );
+      return false;
+    })
+    .filter(Boolean);
 
   JSON2SV(missingIndexesErrors, "./output/missing_from_results.tsv", {
     delimiter: "\t",
