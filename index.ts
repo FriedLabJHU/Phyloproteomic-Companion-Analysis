@@ -98,6 +98,22 @@ const init = async () => {
 
   cleanUpPrev(outputFile);
 
+  // take the results and get all the indexes
+  // create an error file with all the indexes that are missing
+  const missingIndexes = [];
+  for (let i = 0; i < maxQueries; i++) {
+    if (!resultsWithAllObjectKeys.find((item) => item.index === i)) {
+      missingIndexes.push(i);
+    }
+  }
+  const missingIndexesErrors = missingIndexes.map((index) => data[index]);
+
+  JSON2SV(missingIndexesErrors, "./output/missing_from_results.tsv", {
+    delimiter: "\t",
+    encoding: "utf8",
+    flag: "a",
+  });
+
   JSON2SV(errors, "./output/errors.tsv", {
     delimiter: "\t",
     encoding: "utf8",

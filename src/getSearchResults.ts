@@ -273,6 +273,6 @@ export const getSearchResults = async (
       return null;
     }
     console.log(error);
-    return { url, name: bacteria.unique_name, success: false };
+    return null;
   }
 };
