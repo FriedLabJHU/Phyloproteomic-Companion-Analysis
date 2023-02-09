@@ -52,7 +52,7 @@ const init = async () => {
   const dataLength = data.length;
   const maxQueries = Number(process.env.maxQueries) || dataLength;
   let skipWarning = true;
-  const allSearchTerms = [];
+  const allSearchTerms: string[] = [];
   const errors = [];
   const searchResults = (
     await Promise.all(
@@ -107,7 +107,16 @@ const init = async () => {
       missingIndexes.push(i);
     }
   }
-  const missingIndexesErrors = missingIndexes.map((index) => data[index]);
+  const missingIndexesErrors = missingIndexes.map((index) => {
+    // if its the species is not in allSearchTerms then add it to missing else return false
+    const datum = data[index];
+    const searchTerm = allSearchTerms.findIndex(
+      (item) => item.toLowerCase() === datum.species.toLowerCase()
+    );
+    if (searchTerm === -1) return { ...datum, index };
+    console.log(`duplicate missing index: skipping ${index} ${datum.species}`);
+    return false;
+  });
 
   JSON2SV(missingIndexesErrors, "./output/missing_from_results.tsv", {
     delimiter: "\t",
