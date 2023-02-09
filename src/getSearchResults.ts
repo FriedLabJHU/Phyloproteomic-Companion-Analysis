@@ -11,7 +11,6 @@ export const getSearchResults = async (
     console.log(`searchTerm already searched: ${searchTerm}`);
     return;
   }
-  searchTerms.push(searchTerm);
   const url =
     `https://www.atcc.org/search#q=${searchTerm}&sort=relevancy&numberOfResults=24&f:Contenttype=[Products]&f:Productcategory=[Bacteria]`.replace(
       / /g,
@@ -259,6 +258,8 @@ export const getSearchResults = async (
         acc[curr] = objectToTrim[curr]?.replace(/\t/g, "")?.replace(/\n/g, "");
       return acc;
     }, {});
+
+    searchTerms.push(searchTerm);
     return objectTrimmed;
   } catch (error) {
     // if contains "Navigation timeout of 30000 ms exceeded"
