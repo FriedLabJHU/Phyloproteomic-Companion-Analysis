@@ -18,7 +18,8 @@ const init = async () => {
   });
 
   // x pages at a time to iterate through
-  const totalPages = 10;
+  const totalPages = Number(process.env.browsers) || 10;
+
   const pages = await Promise.all(
     new Array(totalPages).fill(0).map(() => browser.newPage())
   );
@@ -62,7 +63,7 @@ const init = async () => {
           try {
             const result = await getSearchResults(item, page, allSearchTerms);
             availablePages.push(pageIndex);
-            if (result === null) {
+            if (!result) {
               errors.push(item);
               return false;
             }
