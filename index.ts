@@ -18,7 +18,8 @@ const init = async () => {
   });
 
   // x pages at a time to iterate through
-  const totalPages = 10;
+  const totalPages = Number(process.env.browsers) || 10;
+
   const pages = await Promise.all(
     new Array(totalPages).fill(0).map(() => browser.newPage())
   );
@@ -51,7 +52,7 @@ const init = async () => {
   const dataLength = data.length;
   const maxQueries = Number(process.env.maxQueries) || dataLength;
   let skipWarning = true;
-  const allSearchTerms = [];
+  const allSearchTerms: string[] = [];
   const errors = [];
   const searchResults = (
     await Promise.all(
@@ -62,7 +63,7 @@ const init = async () => {
           try {
             const result = await getSearchResults(item, page, allSearchTerms);
             availablePages.push(pageIndex);
-            if (result === null) {
+            if (!result) {
               errors.push(item);
               return false;
             }
@@ -97,6 +98,35 @@ const init = async () => {
   });
 
   cleanUpPrev(outputFile);
+
+  // take the results and get all the indexes
+  // create an error file with all the indexes that are missing
+  const missingIndexes = [];
+  for (let i = 0; i < maxQueries; i++) {
+    if (!resultsWithAllObjectKeys.find((item) => item.index === i)) {
+      missingIndexes.push(i);
+    }
+  }
+  const missingIndexesErrors = missingIndexes
+    .map((index) => {
+      // if its the species is not in allSearchTerms then add it to missing else return false
+      const datum = data[index];
+      const searchTerm = allSearchTerms.findIndex(
+        (item) => item.toLowerCase() === datum.species.toLowerCase()
+      );
+      if (searchTerm === -1) return { ...datum, index };
+      console.log(
+        `duplicate missing index: skipping ${index} ${datum.species}`
+      );
+      return false;
+    })
+    .filter(Boolean);
+
+  JSON2SV(missingIndexesErrors, "./output/missing_from_results.tsv", {
+    delimiter: "\t",
+    encoding: "utf8",
+    flag: "a",
+  });
 
   JSON2SV(errors, "./output/errors.tsv", {
     delimiter: "\t",
