@@ -112,7 +112,7 @@ const init = async () => {
       // if its the species is not in allSearchTerms then add it to missing else return false
       const datum = data[index];
       const searchTerm = allSearchTerms.findIndex(
-        (item) => item.toLowerCase() === datum.species.toLowerCase()
+        (item) => item?.toLowerCase() === datum.species?.toLowerCase()
       );
       if (searchTerm === -1) return { ...datum, index };
       console.log(

@@ -5,7 +5,7 @@ export const getSearchResults = async (
   page: Page,
   searchTerms: string[]
 ) => {
-  const searchTerm = `${bacteria.species}`.toLowerCase();
+  const searchTerm = `${bacteria.species}`?.toLowerCase();
 
   if (searchTerms.includes(searchTerm)) {
     console.log(`searchTerm already searched: ${searchTerm}`);
@@ -28,7 +28,7 @@ export const getSearchResults = async (
     new Set(searchTerm.replace(/[^a-zA-Z ]/g, "").split(" "))
   ).filter(Boolean);
 
-  if (searchArray.map((str) => str.toLowerCase()).includes("candidatus")) {
+  if (searchArray.map((str) => str?.toLowerCase()).includes("candidatus")) {
     console.log("searchArray includes candidatus");
     return;
   }
@@ -96,9 +96,9 @@ export const getSearchResults = async (
     // remove any match with the following words
     const filteredResults = results.filter((item) => {
       // if innerText contains "This is a Mission Collection Item", remove it from results array
-      if (item.innerText.toLowerCase().includes(filterText)) return false;
+      if (item.innerText?.toLowerCase().includes(filterText)) return false;
 
-      const title = item.title.toLowerCase();
+      const title = item.title?.toLowerCase();
       const matchedAWord = blackListedWords.map((word) => {
         if (title.includes(word)) {
           return false;
@@ -126,7 +126,7 @@ export const getSearchResults = async (
       })
       .reduce(
         (acc: { score: number; title: string; url: string }, curr, index) => {
-          const currTitle = curr.title.toLowerCase();
+          const currTitle = curr.title?.toLowerCase();
           let score = curr.score;
           if (currTitle.includes(searchArray[0])) score += 2;
 
@@ -213,7 +213,7 @@ export const getSearchResults = async (
         )?.find((el) => {
           // get the h3 element child
           const h3: HTMLElement = (el as HTMLElement).querySelector("h3");
-          if (h3?.innerText.toLowerCase() === "handling information") {
+          if (h3?.innerText?.toLowerCase() === "handling information") {
             return true;
           }
           return false;
@@ -236,13 +236,13 @@ export const getSearchResults = async (
       // convert to object with key value pairs
       const infoObj = [...info1, ...info2].reduce((acc, curr) => {
         acc[curr.title] = curr.value;
-        if (curr.title.toLowerCase() === "type strain") {
+        if (curr.title?.toLowerCase() === "type strain") {
           // it will be yes or no convert to boolean
-          acc[curr.title] = curr.value.toLowerCase() === "yes" ? true : false;
+          acc[curr.title] = curr.value?.toLowerCase() === "yes" ? true : false;
         }
-        if (curr.title.toLowerCase() === "genome sequenced strain") {
+        if (curr.title?.toLowerCase() === "genome sequenced strain") {
           // it will be yes or no convert to boolean
-          acc[curr.title] = curr.value.toLowerCase() === "yes" ? true : false;
+          acc[curr.title] = curr.value?.toLowerCase() === "yes" ? true : false;
         }
         return acc;
       }, {});
